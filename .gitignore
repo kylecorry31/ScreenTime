@@ -1,0 +1,5 @@
+*.out
+usage
+usage_reader
+usage.txt
+*.o
