@@ -1,6 +1,13 @@
 #include "usage.h"
 
-int main(){
+int main(int argc, char* argv[]){
+
+	char* today_file = "usage.txt";
+
+	if (argc == 2)
+	{
+		today_file = argv[1];
+	}
 
 	long delay = 1;
 
@@ -9,7 +16,7 @@ int main(){
 	m_sleep(delay);
 
 	// Load from file
-	char* file_contents = read_str(TODAY_FILE);
+	char* file_contents = read_str(today_file);
 	if(file_contents){
 		sscanf(file_contents, "%ld\n%ld", &screen_time_seconds, &unlocks);
 		free(file_contents);
@@ -38,7 +45,7 @@ int main(){
 		int length = snprintf(NULL, 0, "%ld\n%ld", screen_time_seconds, unlocks);
 		char* str = malloc(length + 1);
 		snprintf(str, length + 1, "%ld\n%ld", screen_time_seconds, unlocks);
-		write_str(TODAY_FILE, str);
+		write_str(today_file, str);
 		free(str);
 
 		// Delay

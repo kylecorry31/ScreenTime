@@ -6,6 +6,5 @@
 #include <time.h>
 #include "file_reader.h"
 #include "time_utils.h"
-#include "common.h"
 
 #endif
