@@ -1,10 +1,16 @@
-all: usage usage_reader
+all: usage usage_reader usage_tests
 
 usage_reader: usage_reader.o file_reader.o time_utils.o
 	gcc -Wall usage_reader.o file_reader.o time_utils.o -o usage_reader
 
 usage: usage.o file_reader.o time_utils.o
 	gcc -Wall usage.o file_reader.o time_utils.o -o usage
+
+usage_tests: usage_tests.o file_reader.o time_utils.o
+	gcc -Wall $^ -o usage_tests
+
+usage_tests.o: usage_tests.c *.h
+	gcc -c -Wall usage_tests.c
 
 usage_reader.o: usage_reader.c *.h
 

@@ -51,7 +51,7 @@ int main(int argc, char* argv[]){
 
 		// Write to a file
 		int length = snprintf(NULL, 0, "%ld\n%ld\n%ld", screen_time_seconds, unlocks, mktime(date));
-		char* str = malloc(length + 1);
+		char* str = malloc(sizeof(char) * (length + 1));
 		snprintf(str, length + 1, "%ld\n%ld\n%ld", screen_time_seconds, unlocks, mktime(date));
 		write_str(today_file, str);
 		free(str);
