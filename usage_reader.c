@@ -2,14 +2,12 @@
 
 int main(int argc, char* argv[]){
 
-	char* today_file = "usage.txt";
+	char* today_file = "/tmp/usage/usage.txt";
 
 	if (argc == 2)
 	{
 		today_file = argv[1];
 	}
-
-	long delay = 1;
 
 	unsigned long screen_time_seconds = 0;
 	unsigned long unlocks = 1;

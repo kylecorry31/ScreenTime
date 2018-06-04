@@ -1,0 +1,9 @@
+[Unit]
+Description=Monitor computer usage
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/usage_startup.sh
+
+[Install]
+WantedBy=multi-user.target

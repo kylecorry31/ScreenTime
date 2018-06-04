@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[]){
 
-	char* today_file = "usage.txt";
+	char* today_file = "/tmp/usage/usage.txt";
 
 	if (argc == 2)
 	{
