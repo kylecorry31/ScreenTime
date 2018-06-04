@@ -15,14 +15,21 @@ int main(int argc, char* argv[]){
 	unsigned long unlocks = 1;
 	m_sleep(delay);
 
+	struct tm last_time = *get_time();
+
 	// Load from file
 	char* file_contents = read_str(today_file);
 	if(file_contents){
-		sscanf(file_contents, "%ld\n%ld", &screen_time_seconds, &unlocks);
+		time_t last_updated;
+		sscanf(file_contents, "%ld\n%ld\n%ld", &screen_time_seconds, &unlocks, &last_updated);
+		if(!on_same_date(&last_time, localtime(&last_updated))){
+			// TODO: Archive
+			screen_time_seconds = 0;
+			unlocks = 1;
+		}
 		free(file_contents);
 	}
 
-	struct tm last_time = *get_time();
 	while(1){
 		struct tm* date = get_time();
 		// printf("%d-%d-%d %d:%d:%d\n", date->tm_mon, date->tm_mday, date->tm_year + 1900, 
@@ -30,6 +37,7 @@ int main(int argc, char* argv[]){
 		screen_time_seconds += delay;
 		if (!on_same_date(&last_time, date))
 		{
+			// TODO: archive
 			screen_time_seconds = 0;
 			unlocks = 1;
 		} else {
@@ -42,9 +50,9 @@ int main(int argc, char* argv[]){
 		last_time = *date;
 
 		// Write to a file
-		int length = snprintf(NULL, 0, "%ld\n%ld", screen_time_seconds, unlocks);
+		int length = snprintf(NULL, 0, "%ld\n%ld\n%ld", screen_time_seconds, unlocks, mktime(date));
 		char* str = malloc(length + 1);
-		snprintf(str, length + 1, "%ld\n%ld", screen_time_seconds, unlocks);
+		snprintf(str, length + 1, "%ld\n%ld\n%ld", screen_time_seconds, unlocks, mktime(date));
 		write_str(today_file, str);
 		free(str);
 
