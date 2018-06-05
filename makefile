@@ -16,14 +16,17 @@ uninstall:
 	rm -f /etc/systemd/system/$(BIN_PREFIX).service
 	systemctl disable $(BIN_PREFIX).service
 
-$(BIN_PREFIX)_reader: usage_reader.o file_reader.o time_utils.o
+$(BIN_PREFIX)_reader: usage_reader.o file_reader.o time_utils.o usage_utils.o
 	gcc -Wall $^ -o $(BIN_PREFIX)_reader
 
-$(BIN_PREFIX): usage.o file_reader.o time_utils.o
+$(BIN_PREFIX): usage.o file_reader.o time_utils.o usage_utils.o
 	gcc -Wall $^ -o $(BIN_PREFIX)
 
-$(BIN_PREFIX)_tests: usage_tests.o file_reader.o time_utils.o
+$(BIN_PREFIX)_tests: usage_tests.o file_reader.o time_utils.o usage_utils.o
 	gcc -Wall $^ -o $(BIN_PREFIX)_tests
+
+usage_utils.o: usage_utils.c *.h
+	gcc -c -Wall usage_utils.c
 
 usage_tests.o: usage_tests.c *.h
 	gcc -c -Wall usage_tests.c
