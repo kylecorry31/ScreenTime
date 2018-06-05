@@ -13,5 +13,6 @@
 int m_sleep(double seconds);
 void daemon_mode(int argc, char* argv[]);
 void print_usage(int argc, char* argv[]);
+void help(void);
 
 #endif

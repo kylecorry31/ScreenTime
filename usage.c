@@ -4,18 +4,44 @@ int main(int argc, char* argv[]){
 
 	// TODO: print help
 
-	if (argc >= 2)
+	if (argc == 2 || argc == 3)
 	{
 		if (strcmp(argv[1], "daemon") == 0)
 		{
 			daemon_mode(argc, argv);
 		}
+
+		if (strcmp(argv[1], "--help") == 0)
+		{
+			help();
+			return 0;
+		}
 	} 
 
+	if (argc <= 2)
+	{
+		print_usage(argc, argv);
+		return 0;
+	}
 
-	print_usage(argc, argv);
-	
-	return 0;
+
+	help();
+	return 1;
+}
+
+
+/**
+ * Print the help to see how to use the program.
+ */
+void help(void){
+	printf("screen-time [daemon] [path]\n");
+	printf("\tdaemon - run in daemon mode\n");
+	printf("\tno arguments - query the current usage\n");
+	printf("\tpath - the usage file to read from\n");
+
+	printf("\nExample\n");
+	printf("Query the current usage\n");
+	printf("\tscreen-time\n");
 }
 
 /**
