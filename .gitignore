@@ -1,6 +1,6 @@
 *.out
-usage
-usage_reader
+screen-time
+screen-time_tests
 usage.txt
 usage_test.txt
 *.o
