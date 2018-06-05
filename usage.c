@@ -86,6 +86,8 @@ void daemon_mode(int argc, char* argv[]){
 		usage.unlocks++;
 	}
 
+	time_t unlock_time = mktime(&last_time);
+
 	while(1){
 		struct tm* date = get_time();
 		// printf("%d-%d-%d %d:%d:%d\n", date->tm_mon, date->tm_mday, date->tm_year + 1900, 
@@ -101,6 +103,10 @@ void daemon_mode(int argc, char* argv[]){
 			if (time_diff >= (delay + 2))
 			{
 				usage.unlocks++;
+				session_t session = make_session(unlock_time, mktime(date));
+				printf("%ld\n", session_length(session));
+				// TODO: save session times
+				unlock_time = mktime(date);
 			}
 		}
 		last_time = *date;
@@ -135,5 +141,10 @@ void print_usage(int argc, char* argv[]){
 	unsigned long hours = minutes_to_hours(minutes);
 	minutes %= 60;
 
-	printf("%ld hr %ld min\n%d unlocks\n", hours, minutes, usage.unlocks);
+	if (hours == 0)
+	{
+		printf("%ldm\n%d unlocks\n", minutes, usage.unlocks);
+	} else {
+		printf("%ldh %ldm\n%d unlocks\n", hours, minutes, usage.unlocks);
+	}
 }

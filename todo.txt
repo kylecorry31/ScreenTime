@@ -1,0 +1,32 @@
+# Features
+* Daily average (week hours/7)
+* Overall average (overall hours/total days)
+* Breakdown of usage over the day (when the device was unlocked and locked)
+* How this week compares to last week (% difference)
+* How frequently the device is unlocked (average time between unlocks)
+* Longest use session of the day
+* Time used after bedtime
+* How today compares to the overall average (hours and minutes)
+* Total time spent on computer over the week
+
+## Day view
+* Total time for the day
+* Number of unlocks
+* Frequency of unlocks
+* Breakdown of usage times across day
+* Longest session
+* Time after bedtime
+* Comparison to overall average
+
+## Week view
+* Daily average
+* Comparison to last week
+* Total hours
+* Breakdown of usage across week
+* Frequency of unlocks (average of the days)
+
+# References (Apple's is currently better)
+* https://www.apple.com/newsroom/2018/06/ios-12-introduces-new-features-to-reduce-interruptions-and-manage-screen-time/
+* https://www.theguardian.com/technology/2018/jun/04/apple-ios12-screen-time-apps-how-much-spent-phone-digital-wellbeing
+* https://gizmodo.com/googles-new-digital-wellbeing-android-features-save-you-1825862981
+* https://www.theverge.com/2018/5/8/17327302/android-p-update-new-features-changes-video-google-io-2018
