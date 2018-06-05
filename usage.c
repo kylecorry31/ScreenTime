@@ -103,9 +103,10 @@ void daemon_mode(int argc, char* argv[]){
 			if (time_diff >= (delay + 2))
 			{
 				usage.unlocks++;
-				session_t session = make_session(unlock_time, mktime(date));
+				session_t session = make_session(unlock_time, mktime(&last_time));
 				printf("%ld\n", session_length(session));
 				// TODO: save session times
+				add_session(&usage, session);
 				unlock_time = mktime(date);
 			}
 		}

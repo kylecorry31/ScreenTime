@@ -79,7 +79,7 @@ void test_time(void){
 
 void test_usage(void){
 	// Make usage
-	usage_t usage = make_usage(2, 1, 0);
+	usage_t usage = make_usage(2, 1, 0, NULL, 0);
 	assert(usage.screen_time_sec == 2);
 	assert(usage.unlocks == 1);
 	assert(usage.last_updated == 0);
@@ -94,12 +94,44 @@ void test_usage(void){
 	assert(usage.last_updated == 0);
 
 
-	set_current_usage(FILE_NAME, make_usage(2, 1, 0));
+	set_current_usage(FILE_NAME, make_usage(2, 1, 0, NULL, 0));
 
 	usage = get_current_usage(FILE_NAME);
 	assert(usage.screen_time_sec == 2);
 	assert(usage.unlocks == 1);
 	assert(usage.last_updated == 0);
+
+	remove(FILE_NAME);
+
+	// Sessions
+	assert(usage.sessions == NULL);
+	assert(usage.num_sessions == 0);
+
+	session_t session = make_session(0, 1);
+
+	assert(session_length(session) == 1);
+
+	add_session(&usage, session);
+
+	assert(usage.num_sessions == 1);
+	assert(usage.sessions != NULL);
+	assert(usage.sessions[0].start_time == session.start_time);
+	assert(usage.sessions[0].end_time == session.end_time);
+
+	session_t session2 = make_session(100, 150);
+
+	assert(session_length(session2) == 50);
+
+	add_session(&usage, session2);
+
+	assert(usage.num_sessions == 2);
+	assert(usage.sessions != NULL);
+	assert(usage.sessions[0].start_time == session.start_time);
+	assert(usage.sessions[0].end_time == session.end_time);
+	assert(usage.sessions[1].start_time == session2.start_time);
+	assert(usage.sessions[1].end_time == session2.end_time);
+
+	free_usage(usage);
 
 	printf("Usage:\t\t\t[OK]\n");
 }
