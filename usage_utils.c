@@ -1,6 +1,6 @@
 #include "usage_utils.h"
 
-usage_t make_usage(unsigned long screen_time_sec, unsigned int unlocks, unsigned long last_updated){
+usage_t make_usage(unsigned long screen_time_sec, unsigned int unlocks, time_t last_updated){
 	usage_t usage;
 	usage.screen_time_sec = screen_time_sec;
 	usage.unlocks = unlocks;
