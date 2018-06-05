@@ -2,11 +2,45 @@
 
 int main(int argc, char* argv[]){
 
-	char* today_file = "/tmp/usage/usage.txt";
+	// TODO: print help
 
-	if (argc == 2)
+	if (argc >= 2)
 	{
-		today_file = argv[1];
+		if (strcmp(argv[1], "daemon") == 0)
+		{
+			daemon_mode(argc, argv);
+		}
+	} 
+
+
+	print_usage(argc, argv);
+	
+	return 0;
+}
+
+/**
+ * Sleep a certain amount of seconds.
+ * 
+ * @param seconds The number of seconds to sleep for.
+ * @return The return code from usleep.
+ */
+int m_sleep(double seconds){
+	return usleep((int) (1000000 * seconds));
+}
+
+
+/**
+ * Run in daemon mode.
+ * 
+ * @param argc The argc from the command line.
+ * @param argv The argv from the command line.
+ */
+void daemon_mode(int argc, char* argv[]){
+	// Load the today file.
+	char* today_file = "/tmp/usage/usage.txt";
+	if (argc == 3)
+	{
+		today_file = argv[2];
 	}
 
 	long delay = 1;
@@ -49,15 +83,29 @@ int main(int argc, char* argv[]){
 		// Delay
 		m_sleep(delay);
 	}
-	return 0;
 }
 
+
 /**
- * Sleep a certain amount of seconds.
+ * Print the usage.
  * 
- * @param seconds The number of seconds to sleep for.
- * @return The return code from usleep.
+ * @param argc The argc from the command line.
+ * @param argv The argv from the command line.
  */
-int m_sleep(double seconds){
-	return usleep((int) (1000000 * seconds));
+void print_usage(int argc, char* argv[]){
+	char* today_file = "/tmp/usage/usage.txt";
+
+	if (argc == 2)
+	{
+		today_file = argv[1];
+	}
+
+	// Load from file
+	usage_t usage = get_current_usage(today_file);
+
+	unsigned long minutes = seconds_to_minutes(usage.screen_time_sec);
+	unsigned long hours = minutes_to_hours(minutes);
+	minutes %= 60;
+
+	printf("%ld hr %ld min\n%d unlocks\n", hours, minutes, usage.unlocks);
 }

@@ -1,3 +1,3 @@
 #! /bin/bash
 mkdir -p /tmp/usage/
-usage /tmp/usage/usage.txt
+usage daemon /tmp/usage/usage.txt
