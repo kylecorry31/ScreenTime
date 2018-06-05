@@ -37,7 +37,7 @@ int m_sleep(double seconds){
  */
 void daemon_mode(int argc, char* argv[]){
 	// Load the today file.
-	char* today_file = "/tmp/usage/usage.txt";
+	char* today_file = "/screen-time/usage.txt";
 	if (argc == 3)
 	{
 		today_file = argv[2];
@@ -56,6 +56,8 @@ void daemon_mode(int argc, char* argv[]){
 	{
 		usage.unlocks = 1;
 		usage.screen_time_sec = 0;
+	} else {
+		usage.unlocks++;
 	}
 
 	while(1){
@@ -93,7 +95,7 @@ void daemon_mode(int argc, char* argv[]){
  * @param argv The argv from the command line.
  */
 void print_usage(int argc, char* argv[]){
-	char* today_file = "/tmp/usage/usage.txt";
+	char* today_file = "/screen-time/usage.txt";
 
 	if (argc == 2)
 	{

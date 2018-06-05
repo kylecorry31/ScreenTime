@@ -1,4 +1,4 @@
-BIN_PREFIX = usage
+BIN_PREFIX = screen-time
 
 all: $(BIN_PREFIX) $(BIN_PREFIX)_tests
 
@@ -38,4 +38,4 @@ time_utils.o: time_utils.c time_utils.h
 clean:
 	rm *.o
 	rm $(BIN_PREFIX)
-	rm usage_tests
+	rm $(BIN_PREFIX)_tests

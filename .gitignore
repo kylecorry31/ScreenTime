@@ -1,7 +1,6 @@
 *.out
 usage
 usage_reader
-usage_tests
 usage.txt
 usage_test.txt
 *.o
