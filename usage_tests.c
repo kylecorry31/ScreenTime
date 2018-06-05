@@ -3,6 +3,7 @@
 int main(int argc, char* argv[]){
 	test_file_writing();
 	test_time();
+	test_usage();
 	printf("All test cases passed.\n");
 	return 0;
 }
@@ -73,4 +74,32 @@ void test_time(void){
 	assert(on_same_date(&time1, &time2));
 
 	printf("Time:\t\t\t[OK]\n");
+}
+
+
+void test_usage(void){
+	// Make usage
+	usage_t usage = make_usage(2, 1, 0);
+	assert(usage.screen_time_sec == 2);
+	assert(usage.unlocks == 1);
+	assert(usage.last_updated == 0);
+
+	// Set and get usage
+	char* FILE_NAME = "usage_test.txt";
+	remove(FILE_NAME);
+
+	usage = get_current_usage(FILE_NAME);
+	assert(usage.screen_time_sec == 0);
+	assert(usage.unlocks == 0);
+	assert(usage.last_updated == 0);
+
+
+	set_current_usage(FILE_NAME, make_usage(2, 1, 0));
+
+	usage = get_current_usage(FILE_NAME);
+	assert(usage.screen_time_sec == 2);
+	assert(usage.unlocks == 1);
+	assert(usage.last_updated == 0);
+
+	printf("Usage:\t\t\t[OK]\n");
 }
