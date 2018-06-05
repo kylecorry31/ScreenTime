@@ -59,6 +59,7 @@ void add_session(usage_t* usage, session_t session){
 void free_usage(usage_t usage){
 	if(usage.sessions){
 		free(usage.sessions);
+		usage.num_sessions = 0;
 	}
 }
 

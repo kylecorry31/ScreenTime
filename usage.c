@@ -95,9 +95,15 @@ void daemon_mode(int argc, char* argv[]){
 		usage.screen_time_sec += delay;
 		if (!on_same_date(&last_time, date))
 		{
+			session_t session = make_session(unlock_time, mktime(&last_time));
+			printf("%ld\n", session_length(session));
+			// TODO: save session times
+			add_session(&usage, session);
+			unlock_time = mktime(date);
 			// TODO: archive
 			usage.screen_time_sec = 0;
 			usage.unlocks = 1;
+			free_usage(usage);
 		} else {
 			time_t time_diff = mktime(date) - mktime(&last_time);
 			if (time_diff >= (delay + 2))
