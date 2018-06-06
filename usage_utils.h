@@ -2,6 +2,7 @@
 #define USAGE_UTILS_H
 
 #include "file_reader.h"
+#include "time_utils.h"
 #include <stdio.h>
 #include <time.h>
 

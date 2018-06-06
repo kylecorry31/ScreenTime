@@ -10,7 +10,15 @@ int main(int argc, char* argv[]){
 
 
 void test_file_writing(void){
+
+	char* FOLDER = "screen-time/";
+
 	char* FILE_NAME = "usage_test.txt";
+
+	char* path = create_file_path(FOLDER, FILE_NAME);
+	assert(strcmp(path, "screen-time/usage_test.txt") == 0);
+	free(path);
+
 	remove(FILE_NAME);
 
 	// Read when file doesn't exist

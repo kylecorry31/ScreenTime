@@ -22,6 +22,35 @@ int on_same_date(struct tm * time1, struct tm * time2){
 			time1->tm_year == time2->tm_year;
 }
 
+int on_same_week(struct tm * time1, struct tm * time2){
+	// TODO: check this
+	if (on_same_date(time1, time2))
+	{
+		return 1;
+	}
+
+
+	int week_day1 = time1->tm_wday;
+
+	int year_day1 = time1->tm_yday;
+	int year_day2 = time2->tm_yday;
+
+	if (year_day2 < year_day1)
+	{
+		year_day2 += 365; // check leap year
+	}
+
+	int days_apart = year_day2 - year_day1;
+
+	week_day1 += days_apart;
+	if (week_day1 >= 7)
+	{
+		return 0;
+	}
+
+	return 1;
+}
+
 /**
  * Converts seconds to minutes, rounding down.
  * 

@@ -34,3 +34,24 @@ char* read_str(char* filename){
   	}
 	return buffer;
 }
+
+
+void copy_file(char* filename1, char* filename2){
+	char* data = read_str(filename1);
+	write_str(filename2, data);
+	free(data);
+}
+
+char* create_file_path(char* folder, char* filename){
+	int folder_len = strlen(folder);
+	int filename_len = strlen(filename);
+
+	int path_len = folder_len + filename_len;
+
+	char* buffer = malloc(sizeof(char) * (path_len + 1));
+
+	strncpy(buffer, folder, folder_len);
+	strcpy(buffer + folder_len, filename);
+
+	return buffer;
+}
