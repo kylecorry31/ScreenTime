@@ -1,4 +1,5 @@
 #include "time_utils.h"
+#include <stdio.h>
 
 /**
  * Get the current time.
@@ -23,32 +24,23 @@ int on_same_date(struct tm * time1, struct tm * time2){
 }
 
 int on_same_week(struct tm * time1, struct tm * time2){
-	// TODO: check this
 	if (on_same_date(time1, time2))
 	{
 		return 1;
 	}
 
-
+	// Get previous sunday
 	int week_day1 = time1->tm_wday;
+	int week_day2 = time2->tm_wday;
 
-	int year_day1 = time1->tm_yday;
-	int year_day2 = time2->tm_yday;
+	long seconds_in_day = 60 * 60 * 24;
 
-	if (year_day2 < year_day1)
-	{
-		year_day2 += 365; // check leap year
-	}
+	time_t time2_seconds = mktime(time2);
+	time2_seconds += (week_day1 - week_day2) * seconds_in_day;
 
-	int days_apart = year_day2 - year_day1;
+	time2 = localtime(&time2_seconds);
 
-	week_day1 += days_apart;
-	if (week_day1 >= 7)
-	{
-		return 0;
-	}
-
-	return 1;
+	return on_same_date(time1, time2);
 }
 
 /**
