@@ -63,62 +63,58 @@ int m_sleep(double seconds){
  */
 void daemon_mode(int argc, char* argv[]){
 	// Load the today file.
-	char* today_file = "/screen-time/usage.txt";
+	char* folder = "st/";
 	if (argc == 3)
 	{
-		today_file = argv[2];
+		folder = argv[2];
 	}
 
 	long delay = 1;
 
 	m_sleep(delay);
 
-	struct tm last_time = *get_time();
+	char* today_file = create_file_path(folder, "week.txt");
 
-	// Load from file
-
-	usage_t usage = get_current_usage(today_file);
-	if (!on_same_date(&last_time, localtime(&(usage.last_updated))))
-	{
-		usage.unlocks = 1;
-		usage.screen_time_sec = 0;
-	} else {
-		usage.unlocks++;
+	FILE * fp = fopen(today_file, "r");
+	time_t last_updated = time(NULL);
+	if(fp){
+		time_t file_time;
+		fscanf(fp, "%ld", &file_time);
+		fclose(fp);
+		if (!on_same_week(localtime(&last_updated), localtime(&file_time)))
+		{
+			char* archive_file = create_file_path(folder, "last-week.txt");
+			copy_file(today_file, archive_file);
+			remove(today_file);
+			free(archive_file);
+		}
 	}
 
-	time_t unlock_time = mktime(&last_time);
 
 	while(1){
-		struct tm* date = get_time();
-		// printf("%d-%d-%d %d:%d:%d\n", date->tm_mon, date->tm_mday, date->tm_year + 1900, 
-		// 	date->tm_hour, date->tm_min, date->tm_sec);
-		usage.screen_time_sec += delay;
-		if (!on_same_date(&last_time, date))
-		{
-			// TODO: archive
-			usage.screen_time_sec = 0;
-			usage.unlocks = 1;
-		} else {
-			time_t time_diff = mktime(date) - mktime(&last_time);
-			if (time_diff >= (delay + 2))
-			{
-				usage.unlocks++;
-				session_t session = make_session(unlock_time, mktime(date));
-				printf("%ld\n", session_length(session));
-				// TODO: save session times
-				unlock_time = mktime(date);
-			}
+
+		fp = fopen(today_file, "a");
+
+		time_t current_time = time(NULL);
+
+		fprintf(fp, "%ld\n", current_time);
+
+		fclose(fp);
+
+		if(!on_same_week(localtime(&last_updated), localtime(&current_time))){
+			char* archive_file = create_file_path(folder, "last-week.txt");
+			copy_file(today_file, archive_file);
+			remove(today_file);
+			free(archive_file);
 		}
-		last_time = *date;
-
-		usage.last_updated = mktime(date);
-		set_current_usage(today_file, usage);
-
+		
 		// Delay
 		m_sleep(delay);
 	}
-}
 
+	free(today_file);
+
+}
 
 /**
  * Print the usage.
@@ -127,24 +123,47 @@ void daemon_mode(int argc, char* argv[]){
  * @param argv The argv from the command line.
  */
 void print_usage(int argc, char* argv[]){
-	char* today_file = "/screen-time/usage.txt";
-
-	if (argc == 2)
+	char* folder = "st/";
+	if (argc == 3)
 	{
-		today_file = argv[1];
+		folder = argv[2];
 	}
 
-	// Load from file
-	usage_t usage = get_current_usage(today_file);
+	long delay = 1;
 
-	unsigned long minutes = seconds_to_minutes(usage.screen_time_sec);
+	char* today_file = create_file_path(folder, "week.txt");
+
+	FILE* fp = fopen(today_file, "r");
+
+	if(!fp){
+		printf("Error reading file.");
+		return;
+	}
+
+	time_t date;
+
+	struct tm today = *get_time();
+
+	unsigned long sot = 0;
+
+
+	while(fscanf(fp, "%ld\n", &date) == 1) {
+		if (on_same_date(&today, localtime(&date)))
+		{
+			sot += delay;
+		}
+	}
+
+	fclose(fp);
+
+	unsigned long minutes = seconds_to_minutes(sot);
 	unsigned long hours = minutes_to_hours(minutes);
 	minutes %= 60;
 
 	if (hours == 0)
 	{
-		printf("%ldm\n%d unlocks\n", minutes, usage.unlocks);
+		printf("%ldm\n", minutes);
 	} else {
-		printf("%ldh %ldm\n%d unlocks\n", hours, minutes, usage.unlocks);
+		printf("%ldh %ldm\n", hours, minutes);
 	}
 }

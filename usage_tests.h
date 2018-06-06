@@ -3,13 +3,12 @@
 
 #include "file_reader.h"
 #include "time_utils.h"
-#include "usage_utils.h"
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include <time.h>
 
 void test_file_writing(void);
 void test_time(void);
-void test_usage(void);
 
 #endif

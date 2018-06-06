@@ -4,3 +4,4 @@ screen-time_tests
 usage.txt
 usage_test.txt
 *.o
+st/

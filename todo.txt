@@ -8,15 +8,18 @@
 * Time used after bedtime
 * How today compares to the overall average (hours and minutes)
 * Total time spent on computer over the week
+* Most frequent unlocks, breakdown of unlocks over the day
 
 ## Day view
 * Total time for the day
 * Number of unlocks
-* Frequency of unlocks
+* Frequency of unlocks (unlocks per hour, time between unlocks)
 * Breakdown of usage times across day
 * Longest session
 * Time after bedtime
 * Comparison to overall average
+* Most frequent unlock time
+* Breakdown of unlocks over the day
 
 ## Week view
 * Daily average

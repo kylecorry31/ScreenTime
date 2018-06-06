@@ -1,4 +1,5 @@
 #include "time_utils.h"
+#include <stdio.h>
 
 /**
  * Get the current time.
@@ -20,6 +21,26 @@ int on_same_date(struct tm * time1, struct tm * time2){
 	return time1->tm_mday == time2->tm_mday &&
 			time1->tm_mon == time2->tm_mon &&
 			time1->tm_year == time2->tm_year;
+}
+
+int on_same_week(struct tm * time1, struct tm * time2){
+	if (on_same_date(time1, time2))
+	{
+		return 1;
+	}
+
+	// Get previous sunday
+	int week_day1 = time1->tm_wday;
+	int week_day2 = time2->tm_wday;
+
+	long seconds_in_day = 60 * 60 * 24;
+
+	time_t time2_seconds = mktime(time2);
+	time2_seconds += (week_day1 - week_day2) * seconds_in_day;
+
+	time2 = localtime(&time2_seconds);
+
+	return on_same_date(time1, time2);
 }
 
 /**

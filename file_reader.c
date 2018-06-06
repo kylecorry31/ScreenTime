@@ -7,8 +7,8 @@
  * @param data The data to write.
  */
 void write_str(char* filename, char* data){
-	FILE *fp = fopen(filename, "w+");
-	fputs(data, fp);
+	FILE *fp = fopen(filename, "w");
+	fprintf(fp, "%s", data);
 	fclose(fp);
 }
 
@@ -20,17 +20,44 @@ void write_str(char* filename, char* data){
  */
 char* read_str(char* filename){
 	char* buffer = NULL;
-	FILE* fp = fopen(filename, "r+");
+	FILE* fp = fopen(filename, "r");
 	if(fp){
 		fseek(fp, 0, SEEK_END);
 		int length = ftell(fp);
 		fseek(fp, 0, SEEK_SET);
-		buffer = malloc(length);
+		buffer = malloc(length + 1);
 		if (buffer)
 		{
 			fread(buffer, 1, length, fp);
 		}
+		buffer[length] = 0;
 	  	fclose(fp);
   	}
+	return buffer;
+}
+
+
+void copy_file(char* filename1, char* filename2){
+	char* data = read_str(filename1);
+	if (data == NULL)
+	{
+		free(data);
+		return;
+	}
+	write_str(filename2, data);
+	free(data);
+}
+
+char* create_file_path(char* folder, char* filename){
+	int folder_len = strlen(folder);
+	int filename_len = strlen(filename);
+
+	int path_len = folder_len + filename_len;
+
+	char* buffer = malloc(sizeof(char) * (path_len + 1));
+
+	strncpy(buffer, folder, folder_len);
+	strcpy(buffer + folder_len, filename);
+
 	return buffer;
 }

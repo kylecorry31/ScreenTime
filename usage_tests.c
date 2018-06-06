@@ -3,14 +3,21 @@
 int main(int argc, char* argv[]){
 	test_file_writing();
 	test_time();
-	test_usage();
 	printf("All test cases passed.\n");
 	return 0;
 }
 
 
 void test_file_writing(void){
+
+	char* FOLDER = "screen-time/";
+
 	char* FILE_NAME = "usage_test.txt";
+
+	char* path = create_file_path(FOLDER, FILE_NAME);
+	assert(strcmp(path, "screen-time/usage_test.txt") == 0);
+	free(path);
+
 	remove(FILE_NAME);
 
 	// Read when file doesn't exist
@@ -18,6 +25,7 @@ void test_file_writing(void){
 
 	// Test writing
 	write_str(FILE_NAME, "test");
+	assert(strlen(read_str(FILE_NAME)) == 4);
 	assert(strcmp(read_str(FILE_NAME), "test") == 0);
 
 	// Test overwriting
@@ -73,33 +81,26 @@ void test_time(void){
 	time1.tm_hour++;
 	assert(on_same_date(&time1, &time2));
 
+	// On same week
+	struct tm* date = calloc(1, sizeof(struct tm));
+	strptime("6/6/18", "%D", date);
+	struct tm wednesday = *date;
+	strptime("6/7/18", "%D", date);
+	struct tm thursday = *date;
+	strptime("6/9/18", "%D", date);
+	struct tm saturday = *date;
+	strptime("6/10/18", "%D", date);
+	struct tm sunday = *date;
+	strptime("6/10/24", "%D", date);
+	struct tm sunday2 = *date;
+
+	free(date);
+
+	assert(on_same_week(&wednesday, &thursday));
+	assert(on_same_week(&wednesday, &saturday));
+	assert(!on_same_week(&wednesday, &sunday));
+	assert(!on_same_week(&sunday, &sunday2));
+
+
 	printf("Time:\t\t\t[OK]\n");
-}
-
-
-void test_usage(void){
-	// Make usage
-	usage_t usage = make_usage(2, 1, 0);
-	assert(usage.screen_time_sec == 2);
-	assert(usage.unlocks == 1);
-	assert(usage.last_updated == 0);
-
-	// Set and get usage
-	char* FILE_NAME = "usage_test.txt";
-	remove(FILE_NAME);
-
-	usage = get_current_usage(FILE_NAME);
-	assert(usage.screen_time_sec == 0);
-	assert(usage.unlocks == 0);
-	assert(usage.last_updated == 0);
-
-
-	set_current_usage(FILE_NAME, make_usage(2, 1, 0));
-
-	usage = get_current_usage(FILE_NAME);
-	assert(usage.screen_time_sec == 2);
-	assert(usage.unlocks == 1);
-	assert(usage.last_updated == 0);
-
-	printf("Usage:\t\t\t[OK]\n");
 }
