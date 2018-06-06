@@ -108,7 +108,7 @@ void set_current_usage(char* filename, usage_t usage){
 		struct tm start_time = *localtime(&start);
 		struct tm end_time = *localtime(&end);
 
-		fprintf(fp, "%d:%d-%d:%d", start_time.tm_hour, start_time.tm_min, end_time.tm_hour, end_time.tm_min);
+		fprintf(fp, "%d:%02d-%d:%02d", start_time.tm_hour, start_time.tm_min, end_time.tm_hour, end_time.tm_min);
 		if (i != usage.num_sessions - 1)
 		{
 			fprintf(fp, ", ");
