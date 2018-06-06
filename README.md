@@ -17,7 +17,7 @@ sudo make install
 Run the following command to see your computer usage:
 
 ```shell
-sudo usage
+screen-time
 ```
 
 ## TODO
