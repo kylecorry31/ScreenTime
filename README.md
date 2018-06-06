@@ -3,7 +3,7 @@ Track how much you use your computer in a day.
 
 ## Features
 * Time spent on computer today
-* Number of unlocks
+* Used with https://github.com/kylecorry31/ScreenTimeGUI
 
 ## Installation
 Download this project and run the following commands to install.
