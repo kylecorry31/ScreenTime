@@ -1,7 +1,5 @@
 BIN_PREFIX = screen-time
 
-all: $(BIN_PREFIX)
-
 install: $(BIN_PREFIX)
 	install -D "$(BIN_PREFIX).py" "/usr/bin/$(BIN_PREFIX)"
 	install -D "$(BIN_PREFIX)_startup.sh" "/usr/bin/$(BIN_PREFIX)_startup.sh"
