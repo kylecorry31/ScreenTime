@@ -3,16 +3,20 @@ Track how much you use your computer.
 
 ## Features
 * Logs time spent on the computer.
-* Used with https://github.com/kylecorry31/ScreenTimeGUI
+* Used with [Screen Time GUI](https://github.com/kylecorry31/ScreenTimeGUI)
+
+## Dependencies
+* Python 2
 
 ## Installation
-Download this project and run the following commands to install.
+Download this project and run the following commands to install (Linux).
 
 ```shell
 sudo make install
 ```
 
 ## Uninstall
+Use the following command to uninstall (Linux).
 
 ```
 sudo make uninstall
