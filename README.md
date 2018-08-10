@@ -1,4 +1,4 @@
-# Usage
+# Screen Time
 Track how much you use your computer.
 
 ## Features
