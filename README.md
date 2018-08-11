@@ -1,5 +1,5 @@
 # Screen Time
-Track how much you use your computer. Records up to two weeks' usage.
+Track how much you use your computer. Records up to two weeks' usage (Up to 13MB).
 
 Designed for Linux, but it works on Windows and Mac as well.
 
