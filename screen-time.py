@@ -20,11 +20,11 @@ def daemon(folder, delay):
     create_file(this_week_path)
     create_file(last_week_path)
 
-    week_file = open(this_week_path, "r")
-
     time.sleep(delay)
 
     last_updated = get_time()
+
+    week_file = open(this_week_path, "r")
 
     if week_file:
         # Read the first line of the week file
@@ -35,11 +35,8 @@ def daemon(folder, delay):
             file_time = int(file_time)
 
             if should_archive(last_updated, file_time):
-                # Save week file to archive
-                copy_file(this_week_path, last_week_path)
-
-                # Erase week file contents
-                erase_file_contents(this_week_path)
+                archive(this_week_path, last_week_path)
+                print "Archiving week file."
 
     while True:
         # In case it gets deleted
@@ -51,18 +48,22 @@ def daemon(folder, delay):
         append_file(this_week_path, str(current_time) + "\n")
 
         if should_archive(current_time, last_updated):
-            # Save week file to archive
-            copy_file(this_week_path, last_week_path)
-
-            # Erase week file contents
-            erase_file_contents(this_week_path)
+            archive(this_week_path, last_week_path)
+            print "Archiving week file."
 
         last_updated = current_time
         time.sleep(delay)
 
 
+# Helpers
+def archive(this_week_path, last_week_path):
+    copy_file(this_week_path, last_week_path)
+    erase_file_contents(this_week_path)
+    
+
 def should_archive(current_time, last_updated):
     return not on_same_week(current_time, last_updated)
+
 
 # Date-Time Utils
 def get_time():
@@ -91,13 +92,13 @@ def on_same_week(time1, time2):
     return get_year(time1) == get_year(time2) and get_week_number(time1) == get_week_number(time2)
 
 
-# FILE UTILS
+# File Utils
 def create_file(file_path):
     try:
         f = open(file_path, "a+")
         f.close()
     except Exception:
-        pass
+        print "Could not create file:", file_path
 
 
 def create_directory(path):
@@ -105,7 +106,7 @@ def create_directory(path):
         if not os.path.exists(path):
             os.makedirs(path)
     except OSError:
-        pass
+        print "Could not create directory:", path
 
 
 def copy_file(src_path, dest_path):
@@ -118,7 +119,7 @@ def copy_file(src_path, dest_path):
         dest_file.close()
         src_file.close()
     except Exception:
-        pass
+        print "Could not copy", src_path, "to", dest_path
 
 
 def erase_file_contents(path):
@@ -126,7 +127,7 @@ def erase_file_contents(path):
         f = open(path, "w+")
         f.close()
     except Exception:
-        pass
+        print "Could not erase file:", path
 
 
 def append_file(path, text):
@@ -135,7 +136,7 @@ def append_file(path, text):
         f.write(text)
         f.close()
     except Exception:
-        pass
+        print "Could not append to file:", path
 
 
 if __name__ == '__main__':
