@@ -11,6 +11,7 @@ LAST_WEEK_FILENAME = "last-week.txt"
 
 
 def daemon(folder, delay):
+    print "Logging screen time in the background."
     create_directory(folder)
 
     this_week_path = os.path.join(folder, THIS_WEEK_FILENAME)
