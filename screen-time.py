@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 import argparse
 import os
@@ -34,7 +34,7 @@ def daemon(folder, delay):
         if file_time:
             file_time = int(file_time)
 
-            if not on_same_week(file_time, last_updated):
+            if should_archive(last_updated, file_time):
                 # Save week file to archive
                 copy_file(this_week_path, last_week_path)
 
@@ -50,15 +50,19 @@ def daemon(folder, delay):
         current_time = get_time()
         append_file(this_week_path, str(current_time) + "\n")
 
-        if not on_same_week(current_time, last_updated):
+        if should_archive(current_time, last_updated):
             # Save week file to archive
             copy_file(this_week_path, last_week_path)
 
             # Erase week file contents
             erase_file_contents(this_week_path)
 
+        last_updated = current_time
         time.sleep(delay)
 
+
+def should_archive(current_time, last_updated):
+    return not on_same_week(current_time, last_updated)
 
 # Date-Time Utils
 def get_time():
