@@ -41,6 +41,11 @@ def daemon(folder, delay):
                 erase_file_contents(this_week_path)
 
     while True:
+        # In case it gets deleted
+        create_directory(folder)
+        create_file(this_week_path)
+        create_file(last_week_path)
+
         current_time = get_time()
         append_file(this_week_path, str(current_time) + "\n")
 
@@ -66,14 +71,19 @@ def on_same_date(time1, time2):
     return t1.date() == t2.date()
 
 
+def get_year(m_time):
+    return datetime.datetime.fromtimestamp(m_time).year
+
+
+def get_week_number(m_time):
+    return datetime.datetime.fromtimestamp(m_time).isocalendar()[1]
+
+
 def on_same_week(time1, time2):
     if on_same_date(time1, time2):
         return True
 
-    t1 = datetime.datetime.fromtimestamp(time1)
-    t2 = datetime.datetime.fromtimestamp(time2)
-
-    return t1.date().isocalendar()[1] == t2.date().isocalendar()[1]
+    return get_year(time1) == get_year(time2) and get_week_number(time1) == get_week_number(time2)
 
 
 # FILE UTILS
@@ -93,13 +103,16 @@ def create_directory(path):
 
 
 def copy_file(src_path, dest_path):
-    src_file = open(src_path, "r")
-    dest_file = open(dest_path, "w+")
+    try:
+        src_file = open(src_path, "r")
+        dest_file = open(dest_path, "w+")
 
-    dest_file.write(src_file.read())
+        dest_file.write(src_file.read())
 
-    dest_file.close()
-    src_file.close()
+        dest_file.close()
+        src_file.close()
+    except Exception:
+        pass
 
 
 def erase_file_contents(path):
