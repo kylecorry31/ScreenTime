@@ -55,6 +55,58 @@ def daemon(folder, delay):
         time.sleep(delay)
 
 
+def todays_usage(folder, delay):
+    week_data = read_file(os.path.join(folder, THIS_WEEK_FILENAME))
+
+    data_points = week_data.split('\n')
+
+    data = []
+
+    for point in data_points:
+        if point:
+            try:
+                data.append(int(point))
+            except Exception:
+                pass
+
+    today = get_time()
+
+    todays_data = list(filter(lambda point: on_same_date(today, point), data))
+
+    total_time = len(todays_data) * delay
+
+    hours = total_time / 3600
+
+    minutes = (total_time % 3600) / 60
+
+    seconds = total_time % 60
+
+    output = ""
+
+    if hours:
+        output += str(hours) + "h "
+
+    if minutes or hours:
+        output += str(minutes) + "m "
+
+    if seconds or minutes or hours:
+        output += str(seconds) + "s"
+
+    unlocks = 1
+
+    for i in range(len(todays_data) - 1):
+        now = todays_data[i]
+        nex = todays_data[i + 1]
+
+        diff = nex - now
+
+        if diff > delay:
+            unlocks += 1
+
+    print "Screen time:", output
+    print "Unlocks:", unlocks
+
+
 # Helpers
 def archive(this_week_path, last_week_path):
     copy_file(this_week_path, last_week_path)
@@ -138,6 +190,16 @@ def append_file(path, text):
     except Exception:
         print "Could not append to file:", path
 
+def read_file(path):
+    try:
+        f = open(path, "r")
+        text = f.read()
+        f.close()
+        return text
+    except Exception:
+        print "Could not read file:", path
+        return ""
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -145,5 +207,9 @@ if __name__ == '__main__':
                         help="The directory to write files to.", type=str, default=FOLDER)
     parser.add_argument("--interval", "-i",
                         help="The recording interval time in seconds. Defaults to 1 second.", type=float, default=1)
+    parser.add_argument("--today", "-t", help="Display today's usage.", action="store_true")
     args = parser.parse_args()
-    daemon(args.directory, args.interval)
+    if not args.today:
+        daemon(args.directory, args.interval)
+    else:
+        todays_usage(args.directory, args.interval)
