@@ -1,9 +1,9 @@
 [Unit]
-Description=Monitor computer usage
+Description=Monitor screen on time.
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/screen-time_startup.sh
+ExecStart=/usr/bin/screen-time
 
 [Install]
 WantedBy=multi-user.target
