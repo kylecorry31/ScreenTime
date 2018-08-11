@@ -116,14 +116,20 @@ def copy_file(src_path, dest_path):
 
 
 def erase_file_contents(path):
-    f = open(path, "w+")
-    f.close()
+    try:
+        f = open(path, "w+")
+        f.close()
+    except Exception:
+        pass
 
 
 def append_file(path, text):
-    f = open(path, "a+")
-    f.write(text)
-    f.close()
+    try:
+        f = open(path, "a+")
+        f.write(text)
+        f.close()
+    except Exception:
+        pass
 
 
 if __name__ == '__main__':
