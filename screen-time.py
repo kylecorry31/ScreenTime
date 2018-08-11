@@ -98,7 +98,8 @@ def create_file(file_path):
 
 def create_directory(path):
     try:
-        os.makedirs(path)
+        if not os.path.exists(path):
+            os.makedirs(path)
     except OSError:
         pass
 
