@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/python3
 
 import argparse
 import os
@@ -11,7 +11,7 @@ LAST_WEEK_FILENAME = "last-week.txt"
 
 
 def daemon(folder, delay):
-    print "Logging screen time in the background."
+    print("Logging screen time in the background.")
     create_directory(folder)
 
     this_week_path = os.path.join(folder, THIS_WEEK_FILENAME)
@@ -36,7 +36,7 @@ def daemon(folder, delay):
 
             if should_archive(last_updated, file_time):
                 archive(this_week_path, last_week_path)
-                print "Archiving week file."
+                print("Archiving week file.")
 
     while True:
         # In case it gets deleted
@@ -49,7 +49,7 @@ def daemon(folder, delay):
 
         if should_archive(current_time, last_updated):
             archive(this_week_path, last_week_path)
-            print "Archiving week file."
+            print("Archiving week file.")
 
         last_updated = current_time
         time.sleep(delay)
@@ -66,18 +66,18 @@ def todays_usage(folder, delay):
         if point:
             try:
                 data.append(int(point))
-            except Exception:
+            except ValueError:
                 pass
 
     today = get_time()
 
-    todays_data = list(filter(lambda point: on_same_date(today, point), data))
+    todays_data = list(filter(lambda p: on_same_date(today, p), data))
 
     total_time = len(todays_data) * delay
 
-    hours = total_time / 3600
+    hours = int(total_time / 3600)
 
-    minutes = (total_time % 3600) / 60
+    minutes = int((total_time % 3600) / 60)
 
     seconds = total_time % 60
 
@@ -103,8 +103,8 @@ def todays_usage(folder, delay):
         if diff > delay:
             unlocks += 1
 
-    print "Screen time:", output
-    print "Unlocks:", unlocks
+    print("Screen time:", output)
+    print("Unlocks:", unlocks)
 
 
 # Helpers
@@ -149,8 +149,8 @@ def create_file(file_path):
     try:
         f = open(file_path, "a+")
         f.close()
-    except Exception:
-        print "Could not create file:", file_path
+    except OSError:
+        print("Could not create file:", file_path)
 
 
 def create_directory(path):
@@ -158,7 +158,7 @@ def create_directory(path):
         if not os.path.exists(path):
             os.makedirs(path)
     except OSError:
-        print "Could not create directory:", path
+        print("Could not create directory:", path)
 
 
 def copy_file(src_path, dest_path):
@@ -170,16 +170,16 @@ def copy_file(src_path, dest_path):
 
         dest_file.close()
         src_file.close()
-    except Exception:
-        print "Could not copy", src_path, "to", dest_path
+    except OSError:
+        print("Could not copy", src_path, "to", dest_path)
 
 
 def erase_file_contents(path):
     try:
         f = open(path, "w+")
         f.close()
-    except Exception:
-        print "Could not erase file:", path
+    except OSError:
+        print("Could not erase file:", path)
 
 
 def append_file(path, text):
@@ -187,8 +187,9 @@ def append_file(path, text):
         f = open(path, "a+")
         f.write(text)
         f.close()
-    except Exception:
-        print "Could not append to file:", path
+    except OSError:
+        print("Could not append to file:", path)
+
 
 def read_file(path):
     try:
@@ -196,8 +197,8 @@ def read_file(path):
         text = f.read()
         f.close()
         return text
-    except Exception:
-        print "Could not read file:", path
+    except OSError:
+        print("Could not read file:", path)
         return ""
 
 
