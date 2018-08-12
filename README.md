@@ -8,7 +8,7 @@ Designed for Linux, but it works on Windows and Mac as well.
 * Used with [Screen Time GUI](https://github.com/kylecorry31/ScreenTimeGUI)
 
 ## Dependencies
-* Python 2
+* Python 3
 
 ## Installation
 Download this project and run the following commands to install.
