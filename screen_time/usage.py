@@ -57,7 +57,6 @@ class WeekUsage:
             days[i].unlocks = len(usage)
 
         self.days = list(reversed(days))
-        print(self.days)
 
 
 class Usage:
