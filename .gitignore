@@ -8,3 +8,4 @@ st/
 .idea/
 *.pyc
 __pycache__/
+build/
