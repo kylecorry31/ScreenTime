@@ -6,3 +6,6 @@ usage_test.txt
 *.o
 st/
 .idea/
+*.pyc
+__pycache__/
+build/
