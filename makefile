@@ -1,4 +1,4 @@
-BIN_PREFIX = screen-time
+BIN_PREFIX = screen-time-daemon
 
 install:
 	install -D "$(BIN_PREFIX).py" "/usr/bin/$(BIN_PREFIX)"
