@@ -1,0 +1,26 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2017 Allen B -->
+<component type="desktop">
+  <id>com.kylecorry.screen_time</id>
+  <metadata_license>CC0</metadata_license>
+  <project_license>MIT</project_license>
+  <name>Screen Time</name>
+  <summary>View your computer usage</summary>
+  <developer_name>Kyle Corry</developer_name>
+  <screenshots>
+      <screenshot type="default">
+          <image>https://raw.githubusercontent.com/mirkobrombin/ppaextender/master/screenshot.png</image>
+      </screenshot>
+  </screenshots>
+  <description>
+    <p>View your computer usage/p>
+  </description>
+  <url type="homepage">https://github.com/kylecorry31/ScreenTime</url>
+  <url type="bugtracker">https://github.com/kylecorry31/ScreenTime/issues</url>
+  <url type="help">https://github.com/kylecorry31/ScreenTime/issues/new</url>
+  <custom>
+     <value key="x-appcenter-color-primary">#4c6ea5</value>
+     <value key="x-appcenter-color-primary-text">#ebf1f9</value>
+  </custom>
+</component>
