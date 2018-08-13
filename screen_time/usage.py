@@ -9,6 +9,68 @@ WEEK_FILE = "week.txt"
 LAST_WEEK_FILE = "last-week.txt"
 
 
+class WeekUsage:
+
+    def __init__(self):
+
+        f = open(os.path.join(DIRECTORY, WEEK_FILE), "r")
+        week_contents = f.read()
+        f.close()
+
+        f = open(os.path.join(DIRECTORY, LAST_WEEK_FILE), "r")
+        last_week_contents = f.read()
+        f.close()
+
+        data_points = week_contents.split('\n')
+
+        data = []
+
+        for point in data_points:
+            if point:
+                try:
+                    data.append(int(point))
+                except ValueError:
+                    pass
+
+        data_points = last_week_contents.split('\n')
+
+        for point in data_points:
+            if point:
+                try:
+                    data.append(int(point))
+                except ValueError:
+                    pass
+
+        days = [Usage(None, 0, 0) for i in range(7)]
+
+        today = get_time()
+
+        for i in range(7):
+            i = 6 - i
+
+            day = datetime.datetime.fromtimestamp(today) - datetime.timedelta(days=i)
+
+            usage = get_sessions(data, day.timestamp())
+
+            days[i].date = day.date()
+            days[i].total_time = sum([d.get_length() for d in usage])
+            days[i].unlocks = len(usage)
+
+        self.days = list(reversed(days))
+        print(self.days)
+
+
+class Usage:
+
+    def __init__(self, date, total_time, unlocks):
+        self.total_time = total_time
+        self.unlocks = unlocks
+        self.date = date
+
+    def __repr__(self):
+        return format_time(self.total_time)
+
+
 class TodayUsage:
 
     def __init__(self):
@@ -30,9 +92,7 @@ class TodayUsage:
 
         today = get_time()
 
-        todays_data = list(filter(lambda p: on_same_date(today, p), data))
-
-        self.sessions = condense_durations(todays_data, 4)
+        self.sessions = get_sessions(data, today)
 
         self.unlocks = len(self.sessions)
         self.total_time = sum([d.get_length() for d in self.sessions])
@@ -68,11 +128,18 @@ class Duration:
 def format_time(total_time):
     hours = int(total_time / 3600)
 
+    days = int(hours / 24)
+
+    hours %= 24
+
     minutes = int((total_time % 3600) / 60)
 
     seconds = total_time % 60
 
     output = ""
+
+    if days:
+        output += str(days) + "d "
 
     if hours:
         output += str(hours) + "h "
@@ -80,7 +147,7 @@ def format_time(total_time):
     if minutes or hours:
         output += str(minutes) + "m "
 
-    if seconds and not (minutes or hours):
+    if not (minutes or hours):
         output += str(seconds) + "s"
 
     return output
@@ -120,3 +187,9 @@ def condense_durations(times, difference):
 
         sessions.append(Duration(last_time, prev_time))
     return sessions
+
+
+def get_sessions(data, day):
+    data = list(filter(lambda p: on_same_date(day, p), data))
+
+    return condense_durations(data, 4)
