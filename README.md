@@ -1,14 +1,24 @@
 # Screen Time
-Track how much you use your computer. Records up to two weeks' usage (Up to 13MB).
+Track and view how much you use your computer. Records up to two weeks' usage (Up to 13MB).
 
 Designed for Linux.
+
+![Screen Time - Today](screenshots/today.png)
+
+
+![Screen Time - 7 Days](screenshots/7%20days.png)
 
 ## Features
 * Logs time spent on the computer.
 * Used with [Screen Time GUI](https://github.com/kylecorry31/ScreenTimeGUI)
 
 ## Dependencies
-* Python 3
+* python3
+* python3-matplotlib
+* python3-numpy
+* python3-pip
+* libgtk-3-dev
+* libgranite-dev
 
 ## Installation
 Download this project and run the following commands to install.
@@ -27,7 +37,11 @@ sudo make uninstall
 ```
 
 ## Usage
-To view your screen time, you should use the [Screen Time GUI](https://github.com/kylecorry31/ScreenTimeGUI) application.
+To view your screen time, you should use the following command to open the Screen Time application:
+
+```shell
+screen_time
+```
 
 By default it writes to files in the /screen-time/ directory (week.txt and last-week.txt).
 
