@@ -144,6 +144,11 @@ def on_same_week(time1, time2):
     return get_year(time1) == get_year(time2) and get_week_number(time1) == get_week_number(time2)
 
 
+# User Utils
+def get_user_home():
+    return os.path.expanduser("~")
+
+
 # File Utils
 def create_file(file_path):
     try:
