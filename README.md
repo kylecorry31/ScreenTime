@@ -3,10 +3,10 @@ Track and view how much you use your computer. Records up to two weeks' usage (U
 
 Designed for Linux.
 
-![Screen Time - Today](screenshots/today.png)
+![Screen Time - Today](screenshots/today%20-%201.1.png)
 
 
-![Screen Time - 7 Days](screenshots/7%20days.png)
+![Screen Time - 7 Days](screenshots/7%20days%20-%201.1.png)
 
 ## Features
 * Logs time spent on the computer.
