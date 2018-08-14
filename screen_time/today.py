@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_gtk3cairo import FigureCanvasGTK3Cairo as FigureCanvas
 from .usage import TodayUsage, format_time
 import numpy as np
+from .gtk import *
 
 
 class Today(Gtk.Box):
@@ -15,41 +16,28 @@ class Today(Gtk.Box):
     def __init__(self, parent):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
-        self.set_margin_top(24)
-        self.set_margin_bottom(12)
-        self.set_margin_left(12)
-        self.set_margin_right(12)
-        self.background_color = '#eeeeee'
-        self.bar_color = '#027cf7'
+        set_default_margins(self)
+        self.background_color = INACTIVE_COLOR
+        self.bar_color = PRIMARY_COLOR
 
         self.parent = parent
 
-        today_label = Gtk.Label("Today's Screen Time")
-        today_label.set_line_wrap(True)
-        today_label.set_halign(Gtk.Align.START)
-        today_label.set_justify(Gtk.Justification.FILL)
-        today_label.set_hexpand(True)
-        Gtk.StyleContext.add_class(today_label.get_style_context(), "h1")
+        today_label = create_title("Today's Screen Time")
 
         self.add(today_label)
 
         usage = TodayUsage()
 
-        time_label = Gtk.Label("Total time: {}".format(format_time(usage.get_total_time())))
-        time_label.set_line_wrap(True)
-        time_label.set_halign(Gtk.Align.START)
-        time_label.set_justify(Gtk.Justification.FILL)
-        time_label.set_hexpand(True)
-        Gtk.StyleContext.add_class(time_label.get_style_context(), "h2")
+        time_label = create_usage_detail("Total time", format_time(usage.get_total_time()))
 
         self.add(time_label)
 
-        unlocks_label = Gtk.Label("Unlocks: {}".format(usage.get_unlocks()))
-        unlocks_label.set_line_wrap(True)
-        unlocks_label.set_halign(Gtk.Align.START)
-        unlocks_label.set_justify(Gtk.Justification.FILL)
-        unlocks_label.set_hexpand(True)
-        Gtk.StyleContext.add_class(unlocks_label.get_style_context(), "h2")
+        longest_session_label = create_usage_detail("Longest session",
+                                                    format_time(max([d.get_length() for d in usage.sessions])))
+
+        self.add(longest_session_label)
+
+        unlocks_label = create_usage_detail("Unlocks", usage.get_unlocks())
 
         self.add(unlocks_label)
 
@@ -83,10 +71,10 @@ class Today(Gtk.Box):
 
         ax.get_yaxis().set_visible(False)
         ax.get_xaxis().set_visible(True)
-        ax.tick_params(axis='x', colors='#555555')
-        plt.xticks(range(0, 24*60, 60 * 6), ["12A", "6A", "12P", "6P"])
-        ax.set_facecolor("#f5f5f5")
-        fig.set_facecolor('#f5f5f5')
+        ax.tick_params(axis='x', colors=LABEL_COLOR)
+        plt.xticks(range(0, 24 * 60, 60 * 6), ["12A", "6A", "12P", "6P"])
+        ax.set_facecolor(BACKGROUND_COLOR)
+        fig.set_facecolor(BACKGROUND_COLOR)
         plt.subplots_adjust(left=0.02, right=0.98)
 
         plt.plot()
@@ -108,9 +96,9 @@ def get_chart_times(durations):
 
             # Append break
             if i != len(durations) - 1:
-                d.append(durations[i+1].start() - durations[i].end())
+                d.append(durations[i + 1].start() - durations[i].end())
 
-        d.append(60*24 - durations[-1].end())
+        d.append(60 * 24 - durations[-1].end())
         return d
 
     return [60 * 24]

@@ -7,6 +7,7 @@ from gi.repository import Gtk
 from .usage import WeekUsage, format_time
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_gtk3cairo import FigureCanvasGTK3Cairo as FigureCanvas
+from .gtk import *
 
 
 class Week(Gtk.Box):
@@ -14,22 +15,13 @@ class Week(Gtk.Box):
     def __init__(self, parent):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL, spacing=6)
 
-        self.set_margin_top(24)
-        self.set_margin_bottom(12)
-        self.set_margin_left(12)
-        self.set_margin_right(12)
+        set_default_margins(self)
 
-        self.bar_color = '#027cf7'
+        self.bar_color = PRIMARY_COLOR
 
         self.parent = parent
 
-        week_label = Gtk.Label("Last 7 Day's Screen Time")
-        week_label.set_line_wrap(True)
-        week_label.set_halign(Gtk.Align.START)
-        week_label.set_justify(Gtk.Justification.FILL)
-        week_label.set_hexpand(True)
-        Gtk.StyleContext.add_class(week_label.get_style_context(), "h1")
-
+        week_label = create_title("Last 7 Day's Screen Time")
         self.add(week_label)
 
         usage = WeekUsage()
@@ -37,31 +29,13 @@ class Week(Gtk.Box):
         total_time = sum([d.total_time for d in usage.days])
         total_unlocks = sum([d.unlocks for d in usage.days])
 
-        time_label = Gtk.Label("Total time: {}".format(format_time(total_time)))
-        time_label.set_line_wrap(True)
-        time_label.set_halign(Gtk.Align.START)
-        time_label.set_justify(Gtk.Justification.FILL)
-        time_label.set_hexpand(True)
-        Gtk.StyleContext.add_class(time_label.get_style_context(), "h2")
-
+        time_label = create_usage_detail("Total time", format_time(total_time))
         self.add(time_label)
 
-        average_label = Gtk.Label("Daily average: {}".format(format_time(total_time / 7)))
-        average_label.set_line_wrap(True)
-        average_label.set_halign(Gtk.Align.START)
-        average_label.set_justify(Gtk.Justification.FILL)
-        average_label.set_hexpand(True)
-        Gtk.StyleContext.add_class(average_label.get_style_context(), "h2")
-
+        average_label = create_usage_detail("Daily average", format_time(total_time / 7))
         self.add(average_label)
 
-        unlocks_label = Gtk.Label("Unlocks: {}".format(total_unlocks))
-        unlocks_label.set_line_wrap(True)
-        unlocks_label.set_halign(Gtk.Align.START)
-        unlocks_label.set_justify(Gtk.Justification.FILL)
-        unlocks_label.set_hexpand(True)
-        Gtk.StyleContext.add_class(unlocks_label.get_style_context(), "h2")
-
+        unlocks_label = create_usage_detail("Unlocks", total_unlocks)
         self.add(unlocks_label)
 
         fig, ax = plt.subplots()
@@ -79,12 +53,12 @@ class Week(Gtk.Box):
 
         ax.get_yaxis().set_visible(False)
         ax.get_xaxis().set_visible(True)
-        ax.tick_params(axis='x', colors='#555555')
-        ax.set_facecolor("#f5f5f5")
-        fig.set_facecolor('#f5f5f5')
+        ax.tick_params(axis='x', colors=LABEL_COLOR)
+        ax.set_facecolor(BACKGROUND_COLOR)
+        fig.set_facecolor(BACKGROUND_COLOR)
         plt.subplots_adjust(left=0.02, right=0.98)
 
-        plt.axhline(total_time / (7 * 60), color='#555555', linestyle='dashed', linewidth=1)
+        plt.axhline(total_time / (7 * 60), color=LABEL_COLOR, linestyle='dashed', linewidth=1)
 
         plt.plot()
 
@@ -118,4 +92,4 @@ def add_labels(ax, rects, xpos='center'):
     for rect in rects:
         height = rect.get_height()
         ax.text(rect.get_x() + rect.get_width() * offset[xpos], 1.01 * height,
-                format_time(height * 60), ha=ha[xpos], va='bottom', color="#555555")
+                format_time(height * 60), ha=ha[xpos], va='bottom', color=LABEL_COLOR)
