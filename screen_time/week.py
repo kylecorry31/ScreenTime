@@ -21,7 +21,7 @@ class Week(Gtk.Box):
 
         self.parent = parent
 
-        week_label = create_title("Last 7 Day's Screen Time")
+        week_label = create_title("Last 7 Days")
         self.add(week_label)
 
         usage = WeekUsage()
@@ -29,7 +29,7 @@ class Week(Gtk.Box):
         total_time = sum([d.total_time for d in usage.days])
         total_unlocks = sum([d.unlocks for d in usage.days])
 
-        time_label = create_usage_detail("Total time", format_time(total_time))
+        time_label = create_usage_detail("Screen time", format_time(total_time))
         self.add(time_label)
 
         average_label = create_usage_detail("Daily average", format_time(total_time / 7))
@@ -37,6 +37,9 @@ class Week(Gtk.Box):
 
         unlocks_label = create_usage_detail("Unlocks", total_unlocks)
         self.add(unlocks_label)
+
+        daily_unlocks_label = create_usage_detail("Daily unlocks", int(total_unlocks / 7))
+        self.add(daily_unlocks_label)
 
         fig, ax = plt.subplots()
 

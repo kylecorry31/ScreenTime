@@ -22,23 +22,19 @@ class Today(Gtk.Box):
 
         self.parent = parent
 
-        today_label = create_title("Today's Screen Time")
-
+        today_label = create_title("Today")
         self.add(today_label)
 
         usage = TodayUsage()
 
-        time_label = create_usage_detail("Total time", format_time(usage.get_total_time()))
-
+        time_label = create_usage_detail("Screen time", format_time(usage.get_total_time()))
         self.add(time_label)
 
         longest_session_label = create_usage_detail("Longest session",
                                                     format_time(max([d.get_length() for d in usage.sessions])))
-
         self.add(longest_session_label)
 
         unlocks_label = create_usage_detail("Unlocks", usage.get_unlocks())
-
         self.add(unlocks_label)
 
         fig, ax = plt.subplots()
@@ -72,7 +68,7 @@ class Today(Gtk.Box):
         ax.get_yaxis().set_visible(False)
         ax.get_xaxis().set_visible(True)
         ax.tick_params(axis='x', colors=LABEL_COLOR)
-        plt.xticks(range(0, 24 * 60, 60 * 6), ["12A", "6A", "12P", "6P"])
+        plt.xticks(range(0, 24 * 60 + 1, 60 * 3), ["12A", "3A", "6A", "9A", "12P", "3P", "6P", "9P", "12A"])
         ax.set_facecolor(BACKGROUND_COLOR)
         fig.set_facecolor(BACKGROUND_COLOR)
         plt.subplots_adjust(left=0.02, right=0.98)
