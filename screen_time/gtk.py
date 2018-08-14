@@ -53,3 +53,13 @@ def set_default_margins(box):
     box.set_margin_bottom(12)
     box.set_margin_left(12)
     box.set_margin_right(12)
+
+
+def create_error_bar(message):
+    infobar = Gtk.InfoBar()
+    infobar.message_type = Gtk.MessageType.ERROR
+    label = Gtk.Label(message)
+    infobar.get_content_area().add(label)
+    Gtk.StyleContext.add_class(infobar.get_style_context(), "error")
+    return infobar
+

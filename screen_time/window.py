@@ -3,10 +3,9 @@
 import gi
 
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gdk, GLib
+from gi.repository import Gtk, Gdk
 from .stack import Stack
 from .headerbar import Headerbar
-
 
 class Window(Gtk.Window):
 
@@ -22,11 +21,3 @@ class Window(Gtk.Window):
         self.hbar.switcher.set_stack(self.stack.stack)
 
         self.screen = Gdk.Screen.get_default()
-        self.css_provider = Gtk.CssProvider()
-        # try:
-        #     self.css_provider.load_from_path('data/style.css')
-        # except GLib.Error:
-        #     self.css_provider.load_from_path('/usr/share/screen_time/style.css')
-        self.context = Gtk.StyleContext()
-        self.context.add_provider_for_screen(self.screen, self.css_provider,
-                                             Gtk.STYLE_PROVIDER_PRIORITY_USER)

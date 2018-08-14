@@ -24,7 +24,11 @@ class Week(Gtk.Box):
         week_label = create_title("Last 7 Days")
         self.add(week_label)
 
-        usage = WeekUsage()
+        try:
+            usage = WeekUsage()
+        except Exception:
+            self.parent.add(create_error_bar("Could not read screen time log"))
+            return
 
         total_time = sum([d.total_time for d in usage.days])
         total_unlocks = sum([d.unlocks for d in usage.days])

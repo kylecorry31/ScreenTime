@@ -25,7 +25,11 @@ class Today(Gtk.Box):
         today_label = create_title("Today")
         self.add(today_label)
 
-        usage = TodayUsage()
+        try:
+            usage = TodayUsage()
+        except Exception:
+            self.parent.add(create_error_bar("Could not read screen time log"))
+            return
 
         time_label = create_usage_detail("Screen time", format_time(usage.get_total_time()))
         self.add(time_label)
