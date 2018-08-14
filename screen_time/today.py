@@ -72,7 +72,8 @@ class Today(Gtk.Box):
         ax.get_yaxis().set_visible(False)
         ax.get_xaxis().set_visible(True)
         ax.tick_params(axis='x', colors=LABEL_COLOR)
-        plt.xticks(range(0, 24 * 60 + 1, 60 * 3), ["12A", "3A", "6A", "9A", "12P", "3P", "6P", "9P", "12A"])
+        plt.xticks(range(0, 24 * 60 + 1, 60), ["12A", "", "", "3A", "", "", "6A", "", "", "9A", "", "",
+                                               "12P", "", "", "3P", "", "", "6P", "", "", "9P", "", "", "12A"])
         ax.set_facecolor(BACKGROUND_COLOR)
         fig.set_facecolor(BACKGROUND_COLOR)
         plt.subplots_adjust(left=0.02, right=0.98)
