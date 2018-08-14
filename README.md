@@ -10,7 +10,8 @@ Designed for Linux.
 
 ## Features
 * Logs time spent on the computer.
-* Used with [Screen Time GUI](https://github.com/kylecorry31/ScreenTimeGUI)
+* View time spent on the computer with a detailed today view, or a 7 day view.
+* Also used with [Screen Time GUI](https://github.com/kylecorry31/ScreenTimeGUI) for Windows users (not officially supported)
 
 ## Dependencies
 * python3
