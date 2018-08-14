@@ -49,7 +49,7 @@ class Week(Gtk.Box):
         plt.xticks(range(len(week_days)), week_days)
 
         [i.set_linewidth(0) for i in ax.spines.values()]
-        ax.spines.get('bottom').set_linewidth(0.5)
+        ax.spines.get('bottom').set_linewidth(0.2)
 
         ax.get_yaxis().set_visible(False)
         ax.get_xaxis().set_visible(True)
@@ -58,7 +58,7 @@ class Week(Gtk.Box):
         fig.set_facecolor(BACKGROUND_COLOR)
         plt.subplots_adjust(left=0.02, right=0.98)
 
-        plt.axhline(total_time / (7 * 60), color=LABEL_COLOR, linestyle='dashed', linewidth=1)
+        plt.axhline(total_time / (7 * 60), color=LINE_COLOR, linestyle='dashed', linewidth=0.5)
 
         plt.plot()
 

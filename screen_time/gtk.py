@@ -8,7 +8,8 @@ from gi.repository import Gtk
 
 PRIMARY_COLOR = "#48b9c7"
 INACTIVE_COLOR = "#E6E6E6"
-LABEL_COLOR = "#574f4a"
+LABEL_COLOR = "#888888"
+LINE_COLOR = "#574f4a"
 BACKGROUND_COLOR = "#f5f5f5"
 
 
