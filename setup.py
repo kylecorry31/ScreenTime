@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name='Screen Time',
-    version='1.0',
+    version='1.1',
     author='Kyle Corry',
     description='View your computer usage',
     url='https://github.com/kylecorry31/ScreenTimen',
