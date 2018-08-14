@@ -13,6 +13,5 @@ setup(
     packages=['screen_time'],
     data_files=[
         ('share/metainfo', ['data/screen_time.appdata.xml']),
-        ('lib/screen_time', ['screen_time.pkexec']),
     ],
 )
