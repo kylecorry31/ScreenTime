@@ -46,6 +46,15 @@ class Week(Gtk.Box):
 
         self.add(time_label)
 
+        average_label = Gtk.Label("Daily average: {}".format(format_time(total_time / 7)))
+        average_label.set_line_wrap(True)
+        average_label.set_halign(Gtk.Align.START)
+        average_label.set_justify(Gtk.Justification.FILL)
+        average_label.set_hexpand(True)
+        Gtk.StyleContext.add_class(average_label.get_style_context(), "h2")
+
+        self.add(average_label)
+
         unlocks_label = Gtk.Label("Unlocks: {}".format(total_unlocks))
         unlocks_label.set_line_wrap(True)
         unlocks_label.set_halign(Gtk.Align.START)
@@ -74,6 +83,8 @@ class Week(Gtk.Box):
         ax.set_facecolor("#f5f5f5")
         fig.set_facecolor('#f5f5f5')
         plt.subplots_adjust(left=0.02, right=0.98)
+
+        plt.axhline(total_time / (7 * 60), color='#555555', linestyle='dashed', linewidth=1)
 
         plt.plot()
 
