@@ -6,6 +6,7 @@ install:
 	systemctl enable $(BIN_PREFIX).service
 	python3 setup.py install
 	cp data/screen_time.desktop /usr/share/applications/
+	cp data/screen_time.png /usr/share/icons/
 
 uninstall:
 	rm -f /usr/bin/$(BIN_PREFIX)

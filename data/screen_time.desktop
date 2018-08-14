@@ -4,6 +4,7 @@ GenericName=Screen Time
 Comment=View your computer usage
 Categories=System;
 Exec=screen_time
+Icon=screen_time.png
 Terminal=false
 Type=Application
 Keywords=Python;
