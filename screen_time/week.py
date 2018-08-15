@@ -49,7 +49,7 @@ class Week(Gtk.Box):
 
         week_days = [get_day_letter(d.date.weekday()) for d in usage.days]
 
-        times = [int(d.total_time / 60) for d in usage.days]
+        times = [d.total_time for d in usage.days]
 
         bars = plt.bar(range(len(times)), times, color=self.bar_color)
         add_labels(ax, bars)
@@ -65,7 +65,7 @@ class Week(Gtk.Box):
         fig.set_facecolor(BACKGROUND_COLOR)
         plt.subplots_adjust(left=0.02, right=0.98)
 
-        plt.axhline(total_time / (7 * 60), color=LINE_COLOR, linestyle='dashed', linewidth=0.5)
+        plt.axhline(total_time / 7, color=LINE_COLOR, linestyle='dashed', linewidth=0.5)
 
         plt.plot()
 
@@ -99,4 +99,4 @@ def add_labels(ax, rects, xpos='center'):
     for rect in rects:
         height = rect.get_height()
         ax.text(rect.get_x() + rect.get_width() * offset[xpos], 1.01 * height,
-                format_time(height * 60), ha=ha[xpos], va='bottom', color=LABEL_COLOR)
+                format_time(height), ha=ha[xpos], va='bottom', color=LABEL_COLOR)
