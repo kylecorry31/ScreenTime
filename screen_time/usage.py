@@ -143,7 +143,7 @@ def format_time(total_time):
     if hours:
         output += str(hours) + "h "
 
-    if minutes or hours:
+    if minutes:
         output += str(minutes) + "m "
 
     if not (minutes or hours):
