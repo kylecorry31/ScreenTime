@@ -31,3 +31,7 @@ class Stack(Gtk.Box):
         self.stack.add_titled(self.week, "week", "Last 7 Days")
 
         self.pack_start(self.stack, True, True, 0)
+
+    def refresh(self):
+        self.today.refresh()
+        self.week.refresh()

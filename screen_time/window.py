@@ -21,3 +21,6 @@ class Window(Gtk.Window):
         self.hbar.switcher.set_stack(self.stack.stack)
 
         self.screen = Gdk.Screen.get_default()
+
+    def refresh(self, _):
+        self.stack.refresh()

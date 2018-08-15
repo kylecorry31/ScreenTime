@@ -24,6 +24,41 @@ class Week(Gtk.Box):
         week_label = create_title("Last 7 Days")
         self.add(week_label)
 
+        self.time_label = None
+        self.average_label = None
+        self.unlocks_label = None
+        self.daily_unlocks_label = None
+        self.chart = None
+
+        self.add_data()
+
+    def refresh(self):
+        self.clear_data()
+        self.add_data()
+        self.show_all()
+
+    def clear_data(self):
+        if self.time_label:
+            self.remove(self.time_label)
+            self.time_label = None
+
+        if self.average_label:
+            self.remove(self.average_label)
+            self.average_label = None
+
+        if self.unlocks_label:
+            self.remove(self.unlocks_label)
+            self.unlocks_label = None
+
+        if self.daily_unlocks_label:
+            self.remove(self.daily_unlocks_label)
+            self.daily_unlocks_label = None
+
+        if self.chart:
+            self.remove(self.chart)
+            self.chart = None
+
+    def add_data(self):
         try:
             usage = WeekUsage()
         except Exception:
@@ -33,17 +68,17 @@ class Week(Gtk.Box):
         total_time = sum([d.total_time for d in usage.days])
         total_unlocks = sum([d.unlocks for d in usage.days])
 
-        time_label = create_usage_detail("Screen time", format_time(total_time))
-        self.add(time_label)
+        self.time_label = create_usage_detail("Screen time", format_time(total_time))
+        self.add(self.time_label)
 
-        average_label = create_usage_detail("Daily average", format_time(total_time / 7))
-        self.add(average_label)
+        self.average_label = create_usage_detail("Daily average", format_time(total_time / 7))
+        self.add(self.average_label)
 
-        unlocks_label = create_usage_detail("Unlocks", total_unlocks)
-        self.add(unlocks_label)
+        self.unlocks_label = create_usage_detail("Unlocks", total_unlocks)
+        self.add(self.unlocks_label)
 
-        daily_unlocks_label = create_usage_detail("Daily unlocks", int(total_unlocks / 7))
-        self.add(daily_unlocks_label)
+        self.daily_unlocks_label = create_usage_detail("Daily unlocks", int(total_unlocks / 7))
+        self.add(self.daily_unlocks_label)
 
         fig, ax = plt.subplots()
 
@@ -69,9 +104,9 @@ class Week(Gtk.Box):
 
         plt.plot()
 
-        canvas = FigureCanvas(fig)
-        canvas.set_size_request(768, 200)
-        self.add(canvas)
+        self.chart = FigureCanvas(fig)
+        self.chart.set_size_request(768, 200)
+        self.add(self.chart)
 
 
 def get_day_letter(day):

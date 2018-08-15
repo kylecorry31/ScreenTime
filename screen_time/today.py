@@ -25,21 +25,33 @@ class Today(Gtk.Box):
         today_label = create_title("Today")
         self.add(today_label)
 
+        self.time_label = None
+        self.longest_session_label = None
+        self.unlocks_label = None
+        self.chart = None
+
+        self.add_data()
+
+    def refresh(self):
+        self.clear_data()
+        self.add_data()
+        self.show_all()
+
+    def add_data(self):
         try:
             usage = TodayUsage()
         except Exception:
             self.parent.add(create_error_bar("Could not read screen time log"))
             return
+        self.time_label = create_usage_detail("Screen time", format_time(usage.get_total_time()))
+        self.add(self.time_label)
 
-        time_label = create_usage_detail("Screen time", format_time(usage.get_total_time()))
-        self.add(time_label)
+        self.longest_session_label = create_usage_detail("Longest session",
+                                                         format_time(max([d.get_length() for d in usage.sessions])))
+        self.add(self.longest_session_label)
 
-        longest_session_label = create_usage_detail("Longest session",
-                                                    format_time(max([d.get_length() for d in usage.sessions])))
-        self.add(longest_session_label)
-
-        unlocks_label = create_usage_detail("Unlocks", usage.get_unlocks())
-        self.add(unlocks_label)
+        self.unlocks_label = create_usage_detail("Unlocks", usage.get_unlocks())
+        self.add(self.unlocks_label)
 
         fig, ax = plt.subplots()
 
@@ -80,10 +92,27 @@ class Today(Gtk.Box):
 
         plt.plot()
 
-        canvas = FigureCanvas(fig)
-        canvas.set_size_request(768, 200)
+        self.chart = FigureCanvas(fig)
+        self.chart.set_size_request(768, 200)
 
-        self.add(canvas)
+        self.add(self.chart)
+
+    def clear_data(self):
+        if self.time_label:
+            self.remove(self.time_label)
+            self.time_label = None
+
+        if self.longest_session_label:
+            self.remove(self.longest_session_label)
+            self.longest_session_label = None
+
+        if self.unlocks_label:
+            self.remove(self.unlocks_label)
+            self.unlocks_label = None
+
+        if self.chart:
+            self.remove(self.chart)
+            self.chart = None
 
 
 def get_chart_times(durations):

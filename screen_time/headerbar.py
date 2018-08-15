@@ -8,7 +8,7 @@
 import gi
 
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
+from gi.repository import Gtk, Gio
 
 
 class Headerbar(Gtk.HeaderBar):
@@ -27,3 +27,11 @@ class Headerbar(Gtk.HeaderBar):
         # spinner
         self.spinner = Gtk.Spinner()
         self.pack_end(self.spinner)
+
+        # Refresh button
+        self.refresh_button = Gtk.Button()
+        refresh_icon = Gio.ThemedIcon(name="cm_refresh")
+        image = Gtk.Image.new_from_gicon(refresh_icon, Gtk.IconSize.BUTTON)
+        self.refresh_button.add(image)
+        self.pack_end(self.refresh_button)
+        self.refresh_button.connect("clicked", self.parent.refresh)
