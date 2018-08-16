@@ -4,7 +4,7 @@ import os
 import datetime
 import time
 
-DIRECTORY = "/screen-time/"
+DIRECTORY = "screen-time/"
 WEEK_FILE = "week.txt"
 LAST_WEEK_FILE = "last-week.txt"
 
@@ -13,11 +13,11 @@ class WeekUsage:
 
     def __init__(self):
 
-        f = open(os.path.join(DIRECTORY, WEEK_FILE), "r")
+        f = open(os.path.join("/home/", get_user(), DIRECTORY, WEEK_FILE), "r")
         week_contents = f.read()
         f.close()
 
-        f = open(os.path.join(DIRECTORY, LAST_WEEK_FILE), "r")
+        f = open(os.path.join("/home/", get_user(), DIRECTORY, LAST_WEEK_FILE), "r")
         last_week_contents = f.read()
         f.close()
 
@@ -74,7 +74,7 @@ class TodayUsage:
 
     def __init__(self):
 
-        f = open(os.path.join(DIRECTORY, WEEK_FILE), "r")
+        f = open(os.path.join("/home/", get_user(), DIRECTORY, WEEK_FILE), "r")
         contents = f.read()
         f.close()
 
@@ -192,3 +192,7 @@ def get_sessions(data, day):
     data = list(filter(lambda p: on_same_date(day, p), data))
 
     return condense_durations(data, 4)
+
+
+def get_user():
+    return str(subprocess.Popen(["users"], stdout=subprocess.PIPE).communicate()[0].decode("utf-8")).split('\n')[0]
