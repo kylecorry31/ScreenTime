@@ -4,6 +4,7 @@ import argparse
 import os
 import time
 import datetime
+import subprocess
 
 FOLDER = "/screen-time/"
 THIS_WEEK_FILENAME = "week.txt"
@@ -12,6 +13,10 @@ LAST_WEEK_FILENAME = "last-week.txt"
 
 def daemon(folder, delay):
     print("Logging screen time in the background.")
+    user_folder = False
+    if folder is None:
+        folder = os.path.join("/home/", get_user(), "screen-time/")
+        user_folder = True
     create_directory(folder)
 
     this_week_path = os.path.join(folder, THIS_WEEK_FILENAME)
@@ -39,13 +44,21 @@ def daemon(folder, delay):
                 print("Archiving week file.")
 
     while True:
+        if user_folder:
+            folder = os.path.join("/home/", get_user(), "screen-time/")
+            create_directory(folder)
+
+            this_week_path = os.path.join(folder, THIS_WEEK_FILENAME)
+            last_week_path = os.path.join(folder, LAST_WEEK_FILENAME)
         # In case it gets deleted
         create_directory(folder)
         create_file(this_week_path)
         create_file(last_week_path)
+        # create_file(os.path.join(folder, "users.txt"))
 
         current_time = get_time()
         append_file(this_week_path, str(current_time) + "\n")
+        # append_file(os.path.join(folder, "users.txt"), get_user())
 
         if should_archive(current_time, last_updated):
             archive(this_week_path, last_week_path)
@@ -53,58 +66,6 @@ def daemon(folder, delay):
 
         last_updated = current_time
         time.sleep(delay)
-
-
-def todays_usage(folder, delay):
-    week_data = read_file(os.path.join(folder, THIS_WEEK_FILENAME))
-
-    data_points = week_data.split('\n')
-
-    data = []
-
-    for point in data_points:
-        if point:
-            try:
-                data.append(int(point))
-            except ValueError:
-                pass
-
-    today = get_time()
-
-    todays_data = list(filter(lambda p: on_same_date(today, p), data))
-
-    total_time = len(todays_data) * delay
-
-    hours = int(total_time / 3600)
-
-    minutes = int((total_time % 3600) / 60)
-
-    seconds = total_time % 60
-
-    output = ""
-
-    if hours:
-        output += str(hours) + "h "
-
-    if minutes or hours:
-        output += str(minutes) + "m "
-
-    if seconds or minutes or hours:
-        output += str(seconds) + "s"
-
-    unlocks = 1
-
-    for i in range(len(todays_data) - 1):
-        now = todays_data[i]
-        nex = todays_data[i + 1]
-
-        diff = nex - now
-
-        if diff > delay:
-            unlocks += 1
-
-    print("Screen time:", output)
-    print("Unlocks:", unlocks)
 
 
 # Helpers
@@ -115,6 +76,10 @@ def archive(this_week_path, last_week_path):
 
 def should_archive(current_time, last_updated):
     return not on_same_week(current_time, last_updated)
+
+
+def get_user():
+    return str(subprocess.Popen(["users"], stdout=subprocess.PIPE).communicate()[0].decode("utf-8")).split('\n')[0]
 
 
 # Date-Time Utils
@@ -205,12 +170,8 @@ def read_file(path):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--directory", "-d",
-                        help="The directory to write files to.", type=str, default=FOLDER)
+                        help="The directory to write files to.", type=str, default=None)
     parser.add_argument("--interval", "-i",
                         help="The recording interval time in seconds. Defaults to 1 second.", type=float, default=1)
-    parser.add_argument("--today", "-t", help="Display today's usage.", action="store_true")
     args = parser.parse_args()
-    if not args.today:
-        daemon(args.directory, args.interval)
-    else:
-        todays_usage(args.directory, args.interval)
+    daemon(args.directory, args.interval)
