@@ -71,7 +71,7 @@ class Week(Gtk.Box):
         self.time_label = create_usage_detail("Screen time", format_time(total_time))
         self.add(self.time_label)
 
-        self.average_label = create_usage_detail("Daily average", format_time(total_time / 7))
+        self.average_label = create_usage_detail("Daily average", format_time(int(total_time / 7)))
         self.add(self.average_label)
 
         self.unlocks_label = create_usage_detail("Unlocks", total_unlocks)

@@ -133,7 +133,7 @@ def format_time(total_time):
 
     minutes = int((total_time % 3600) / 60)
 
-    seconds = total_time % 60
+    seconds = int(total_time % 60)
 
     output = ""
 
