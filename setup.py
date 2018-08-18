@@ -9,9 +9,11 @@ setup(
     description='View your computer usage',
     url='https://github.com/kylecorry31/ScreenTimen',
     license='MIT',
-    scripts=['screen_time/screen_time'],
+    scripts=['screen_time/screen_time', 'screen-time-daemon'],
     packages=['screen_time'],
     data_files=[
         ('share/metainfo', ['data/screen_time.appdata.xml']),
+        ('share/icons', ['data/screen_time.png']),
+        ('share/applications', ['data/screen_time.desktop']),
     ],
 )
