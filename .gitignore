@@ -9,3 +9,8 @@ st/
 *.pyc
 __pycache__/
 build/
+_build/
+.debhelper/
+debian/files
+debian/screen-time.substvars
+debian/screen-time/

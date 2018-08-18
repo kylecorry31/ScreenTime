@@ -1,0 +1,22 @@
+Source: screen-time
+Section: gnome
+Priority: optional
+Maintainer: Kyle Corry <kylecorry31@gmail.com>
+Build-Depends: debhelper (>= 10)
+Standards-Version: 4.1.2
+Homepage: https://github.com/kylecorry31/ScreenTime
+X-Python3-Version: >= 3.2
+Vcs-Git: https://github.com/kylecorry31/ScreenTime.git
+
+Package: screen-time
+Architecture: all
+Depends:
+	python3,
+	python3-matplotlib,
+	python3-numpy,
+	python3-pip,
+	libgtk-3-dev,
+	libgranite-dev,
+ 	${misc:Depends}
+Description: Screen Time
+ Visualize computer usage.
