@@ -58,18 +58,18 @@ class Today(Gtk.Box):
         self.add(self.unlocks_label)
 
         # points
-        self.break_points_label = create_usage_detail("Break points",
-                                                      str(break_points(current_time_hours(),
-                                                                       [d.get_length() / 3600.0 for d in
-                                                                        usage.sessions]))
-                                                      + " / 48")
+        self.break_points_label = create_usage_detail("Break points", "{} / {}".format(
+            break_points(current_time_hours(),
+                         [d.get_length() / 3600.0 for d in
+                          usage.sessions]),
+            get_break_points_goal()))
 
         self.add(self.break_points_label)
 
-        self.screen_off_points_label = create_usage_detail("Screen off points",
-                                                           str(screen_off_points(current_time_hours(),
-                                                                                 usage.get_total_time() / 3600.0))
-                                                           + " / 64")
+        self.screen_off_points_label = create_usage_detail("Screen off points", "{} / {}".format(
+            screen_off_points(current_time_hours(),
+                              usage.get_total_time() / 3600.0),
+            get_screen_off_points_goal()))
         self.add(self.screen_off_points_label)
 
         fig, ax = plt.subplots()

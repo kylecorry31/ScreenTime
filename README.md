@@ -18,6 +18,7 @@ Designed for Linux.
 * python3-matplotlib
 * python3-numpy
 * python3-pip
+* python3-toml
 * libgtk-3-dev
 * libgranite-dev
 
@@ -35,6 +36,13 @@ Use the following command to uninstall.
 
 ```
 sudo make uninstall
+```
+
+## Update
+Use the following command to update your application from new sources (must download new sources).
+
+```
+sudo make update
 ```
 
 ## Usage
