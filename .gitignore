@@ -9,3 +9,5 @@ st/
 *.pyc
 __pycache__/
 build/
+target/
+**/*.rs.bk

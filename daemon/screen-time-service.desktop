@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Screen Time
+Comment=Log screen time in the background.
+Exec=screen-time
+Terminal=false
+StartupNotify=false
