@@ -4,7 +4,7 @@ import os
 import datetime
 import time
 
-DIRECTORY = "/screen-time/"
+DIRECTORY = os.path.expanduser("~/.config/screen-time/")
 WEEK_FILE = "week.txt"
 LAST_WEEK_FILE = "last-week.txt"
 

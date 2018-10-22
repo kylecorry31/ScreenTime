@@ -1,9 +1,0 @@
-[Unit]
-Description=Monitor screen on time.
-
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/screen-time-daemon
-
-[Install]
-WantedBy=multi-user.target
