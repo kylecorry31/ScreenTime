@@ -30,7 +30,7 @@ class Headerbar(Gtk.HeaderBar):
 
         # Refresh button
         self.refresh_button = Gtk.Button()
-        refresh_icon = Gio.ThemedIcon(name="cm_refresh")
+        refresh_icon = Gio.ThemedIcon(name="view-refresh-symbolic")
         image = Gtk.Image.new_from_gicon(refresh_icon, Gtk.IconSize.BUTTON)
         self.refresh_button.add(image)
         self.pack_end(self.refresh_button)

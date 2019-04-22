@@ -49,7 +49,7 @@ class Today(Gtk.Box):
             return
         self.time_label = create_usage_detail("Screen time", format_time(usage.get_total_time()))
         self.add(self.time_label)
-
+        print(usage.sessions)
         self.longest_session_label = create_usage_detail("Longest session",
                                                          format_time(max([d.get_length() for d in usage.sessions])))
         self.add(self.longest_session_label)
@@ -80,7 +80,7 @@ class Today(Gtk.Box):
 
         on = False
 
-        plt.xlim(xmax=60 * 24)
+        plt.xlim(right=60 * 24)
 
         index = [1]
 
