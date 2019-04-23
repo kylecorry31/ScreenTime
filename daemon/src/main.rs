@@ -1,5 +1,6 @@
 extern crate chrono;
 
+use std::path::Path;
 use chrono::prelude::*;
 use chrono::TimeZone;
 
@@ -21,9 +22,20 @@ fn start_daemon() -> io::Result<()> {
 
     sleep(delay);
 
-    let mut last_updated = get_time()?;
+    let mut last_log_timestamp = get_last_log(files::get_full_path(THIS_WEEK_FILENAME)?)?;
 
-    let file_contents = files::read(files::get_full_path(THIS_WEEK_FILENAME)?)?;
+    loop {
+        if should_archive(get_time(), last_log_timestamp){
+            archive_log(files::get_full_path(THIS_WEEK_FILENAME)?, files::get_full_path(LAST_WEEK_FILENAME)?)?;
+        }
+        last_log_timestamp = log_screen_time(files::get_full_path(THIS_WEEK_FILENAME)?)?;
+        sleep(delay);
+    }
+}
+
+fn get_last_log<P: AsRef<Path>>(log_path: P) -> io::Result<i64> {
+    let mut last_log_timestamp = get_time();
+    let file_contents = files::read(log_path)?;
     let lines = file_contents.split("\n").collect::<Vec<&str>>();
 
     if lines.len() > 0 {
@@ -34,33 +46,32 @@ fn start_daemon() -> io::Result<()> {
         }
 
         if !last.is_empty() {
-            last_updated = last.parse::<i64>().unwrap();
+            last_log_timestamp = last.parse::<i64>().unwrap();
         }
     }
 
-    loop {
-        let current_time = get_time()?;
+    Ok(last_log_timestamp)
+}
 
-        if should_archive(current_time, last_updated){
-            println!("Archiving week file.");
-            files::archive(files::get_full_path(THIS_WEEK_FILENAME)?, files::get_full_path(LAST_WEEK_FILENAME)?)?;
-        }
+fn archive_log<P: AsRef<Path>>(log_path: P, archive_path: P) -> io::Result<()> {
+    files::archive(log_path, archive_path)?;
+    Ok(())
+}
 
-        files::append(files::get_full_path(THIS_WEEK_FILENAME)?, format!("{}\n", current_time).as_ref())?;
-
-        last_updated = current_time;
-        sleep(delay);
-    }
+fn log_screen_time<P: AsRef<Path>>(log_path: P) -> io::Result<i64> {
+    let current_time = get_time();
+    files::append(log_path, format!("{}\n", current_time).as_ref())?;
+    Ok(current_time)
 }
 
 
-pub fn get_time() -> io::Result<i64> {
+fn get_time() -> i64 {
     let dt = Local::now();
-    Ok(dt.timestamp_millis())
+    dt.timestamp_millis()
 }
 
 
-pub fn sleep(millis: u64) {
+fn sleep(millis: u64) {
     let timeout = time::Duration::from_millis(millis);
     thread::sleep(timeout);
 }
@@ -99,7 +110,7 @@ fn in_same_week_test() {
     assert_eq!(false, in_same_week(sun2_w3, sat2_w4));
 }
 
-pub fn in_same_week(date1: DateTime<Local>, date2: DateTime<Local>) -> bool {
+fn in_same_week(date1: DateTime<Local>, date2: DateTime<Local>) -> bool {
     let within_7_days = (date1.num_days_from_ce() - date2.num_days_from_ce()).abs() < 7;
     let newest_date = if date1 > date2 { date1 } else { date2 };
     let oldest_date = if newest_date == date1 { date2 } else { date1 };
@@ -107,7 +118,7 @@ pub fn in_same_week(date1: DateTime<Local>, date2: DateTime<Local>) -> bool {
     within_7_days && sequential_weekdays
 }
 
-pub fn should_archive(current_time: i64, last_updated: i64) -> bool {
+fn should_archive(current_time: i64, last_updated: i64) -> bool {
     let dt1 = Local.timestamp_millis(current_time);
     let dt2 = Local.timestamp_millis(last_updated);
 
