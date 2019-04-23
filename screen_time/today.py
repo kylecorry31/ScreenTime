@@ -10,7 +10,6 @@ from .usage import TodayUsage, format_time
 import numpy as np
 from .gtk import *
 import datetime
-from .points import *
 
 
 class Today(Gtk.Box):
@@ -30,8 +29,6 @@ class Today(Gtk.Box):
         self.time_label = None
         self.longest_session_label = None
         self.unlocks_label = None
-        self.break_points_label = None
-        self.screen_off_points_label = None
         self.chart = None
 
         self.add_data()
@@ -56,21 +53,6 @@ class Today(Gtk.Box):
 
         self.unlocks_label = create_usage_detail("Unlocks", usage.get_unlocks())
         self.add(self.unlocks_label)
-
-        # points
-        self.break_points_label = create_usage_detail("Break points",
-                                                      str(break_points(current_time_hours(),
-                                                                       [d.get_length() / 3600.0 for d in
-                                                                        usage.sessions]))
-                                                      + " / 48")
-
-        self.add(self.break_points_label)
-
-        self.screen_off_points_label = create_usage_detail("Screen off points",
-                                                           str(screen_off_points(current_time_hours(),
-                                                                                 usage.get_total_time() / 3600.0))
-                                                           + " / 64")
-        self.add(self.screen_off_points_label)
 
         fig, ax = plt.subplots()
 
@@ -128,14 +110,6 @@ class Today(Gtk.Box):
         if self.unlocks_label:
             self.remove(self.unlocks_label)
             self.unlocks_label = None
-
-        if self.break_points_label:
-            self.remove(self.break_points_label)
-            self.break_points_label = None
-
-        if self.screen_off_points_label:
-            self.remove(self.screen_off_points_label)
-            self.screen_off_points_label = None
 
         if self.chart:
             self.remove(self.chart)
